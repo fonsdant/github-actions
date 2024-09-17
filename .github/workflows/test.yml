@@ -1,0 +1,56 @@
+name: Test Cached Tag Workflow
+
+on:
+  push:
+    branches:
+      - trunk
+  pull_request:
+    branches:
+      - trunk
+
+jobs:
+  successful-job:
+    name: Successful Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Simulate Job Execution
+        run: |
+          echo "Running simulated job..."
+          sleep 30
+
+      - name: Update 'cached' Tag
+        if: success()
+        run: |
+          git fetch --tags
+          git tag -f cached $GITHUB_SHA
+          git push origin cached --force
+          echo "Updated 'cached' tag to $(git rev-parse HEAD)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  failing-job:
+    name: Failing Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate Job and Fail
+        run: |
+          echo "Running simulated job that will fail..."
+          sleep 30
+          exit 1  # Force this job to fail
+
+      - name: Update 'cached' Tag
+        if: success()
+        run: |
+          git fetch --tags
+          git tag -f cached $GITHUB_SHA
+          git push origin cached --force
+          echo "Updated 'cached' tag to $(git rev-parse HEAD)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
