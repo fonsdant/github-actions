@@ -32,7 +32,7 @@ jobs:
             /repos/fonsdant/kafka/git/tags \
             -f "tag=v0.0.1" \
             -f "message=initial version" \
-            -f "object=c3d0be41ecbe669545ee3e94d31ed9a4bc91ee3c" \
+            -f "object=$(git rev-parse HEAD)" \
             -f "type=commit"
           git push origin cached --force
           echo "Updated 'cached' tag to $(git rev-parse HEAD)"
