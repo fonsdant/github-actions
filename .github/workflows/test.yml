@@ -25,7 +25,7 @@ jobs:
         if: success()
         run: |
           git fetch --tags
-          git tag -s cached -m 'this is a test tag'
+          git tag -fs cached -m 'this is a test tag'
           git push origin cached --force
           echo "Updated 'cached' tag to $(git rev-parse HEAD)"
         env:
