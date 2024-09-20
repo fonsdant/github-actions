@@ -47,8 +47,6 @@ jobs:
             -f "ref=refs/tags/$tag" \
             -f "sha=$tag_sha"
           echo "Updated 'cached' tag to $commit_sha"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   failing-job:
     name: Failing Job
