@@ -26,7 +26,7 @@ jobs:
         run: |
           git fetch --tags
           commit_sha=$(git rev-parse HEAD)
-          tag_sha=$(
+          response=$(
             gh api \
               --method POST \
               -H "Accept: application/vnd.github+json" \
@@ -38,12 +38,14 @@ jobs:
               -f "type=commit" \
               --jq '.sha'
           )
+          tag=$(echo "$response" | jq -r '.tag')
+          tag_sha=$(echo "$response" | jq -r '.sha')
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/fonsdant/github-actions/git/refs \
-            -f "ref=refs/heads/trunk" \
+            -f "ref=refs/tags/$tag" \
             -f "sha=$tag_sha"
           echo "Updated 'cached' tag to $commit_sha"
         env:
