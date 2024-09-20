@@ -25,17 +25,27 @@ jobs:
         if: success()
         run: |
           git fetch --tags
+          commit_sha=$(git rev-parse HEAD)
+          tag_sha=$(
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/fonsdant/github-actions/git/tags \
+              -f "tag=v0.0.1" \
+              -f "message=initial version" \
+              -f "object=$commit_sha" \
+              -f "type=commit" \
+              --jq '.sha'
+          )
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/fonsdant/github-actions/git/tags \
-            -f "tag=v0.0.1" \
-            -f "message=initial version" \
-            -f "object=$(git rev-parse HEAD)" \
-            -f "type=commit"
-          # git push origin cached --force
-          echo "Updated 'cached' tag to $(git rev-parse HEAD)"
+            /repos/fonsdant/github-actions/git/refs \
+            -f "ref=refs/heads/trunk" \
+            -f "sha=$tag_sha"
+          echo "Updated 'cached' tag to $commit_sha"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
