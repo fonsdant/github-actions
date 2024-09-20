@@ -36,7 +36,6 @@ jobs:
               -f "message=initial version" \
               -f "object=$commit_sha" \
               -f "type=commit" \
-              --jq '.sha'
           )
           tag=$(echo "$response" | jq -r '.tag')
           tag_sha=$(echo "$response" | jq -r '.sha')
