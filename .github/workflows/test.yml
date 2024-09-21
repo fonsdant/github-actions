@@ -17,7 +17,7 @@ jobs:
 
       - name: Update trunk-cached branch with trunk
         run: |
-          git switch trunk-cached || git switch -c trunk-cached
+          git switch -c trunk-cached
           git reset --hard ${{ github.sha }}
           git push -f origin trunk-cached
         env:
