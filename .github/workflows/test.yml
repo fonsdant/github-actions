@@ -23,7 +23,7 @@ jobs:
 
       - name: Merge Latest Commit from Trunk
         run: |
-          git pull origin trunk
+          git fetch origin trunk trunk-cached
           git merge ${{ github.sha }} --no-edit
           git push origin trunk-cached
         env:
