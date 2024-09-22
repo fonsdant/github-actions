@@ -17,6 +17,8 @@ jobs:
 
       - name: Update trunk-cached branch with trunk
         run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
           git branch
           git switch -c trunk-cached
           if git fetch origin trunk-cached; then
