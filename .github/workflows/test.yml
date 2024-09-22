@@ -24,9 +24,9 @@ jobs:
           else
             echo 'Remote ref does not exist'
           fi
-          git log --oneline
+          git log --oneline --all --graph
           git merge ${{ github.sha }}
-          git log --oneline
+          git log --oneline --all --graph
           git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
