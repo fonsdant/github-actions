@@ -19,17 +19,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git branch
+          git fetch origin trunk-cached
           git switch trunk-cached
-          if git fetch origin trunk-cached; then
-            git reset --hard origin/trunk-cached
-          else
-            echo 'Remote ref does not exist'
-          fi
-          git fetch origin trunk
-          git log --oneline --all --graph
           git merge ${{ github.sha }} || git merge --allow-unrelated-histories ${{ github.sha }}
-          git log --oneline --all --graph
           git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
