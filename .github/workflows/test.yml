@@ -26,7 +26,7 @@ jobs:
           fi
           git fetch origin trunk
           git log --oneline --all --graph
-          git merge ${{ github.sha }}
+          git merge ${{ github.sha }} || git merge --allow-unrelated-histories ${{ github.sha }}
           git log --oneline --all --graph
           git push origin trunk-cached
         env:
