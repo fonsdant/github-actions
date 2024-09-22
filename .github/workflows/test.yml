@@ -17,13 +17,16 @@ jobs:
 
       - name: Update trunk-cached branch with trunk
         run: |
+          git branch
           git switch -c trunk-cached
           if git fetch origin trunk-cached; then
             git reset --hard origin/trunk-cached
           else
             echo 'Remote ref does not exist'
           fi
-          git merge --ff-only ${{ github.sha }}
+          git log --oneline
+          git merge ${{ github.sha }}
+          git log --oneline
           git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
