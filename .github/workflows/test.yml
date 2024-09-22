@@ -24,6 +24,7 @@ jobs:
           else
             echo 'Remote ref does not exist'
           fi
+          git fetch origin trunk
           git log --oneline --all --graph
           git merge ${{ github.sha }}
           git log --oneline --all --graph
