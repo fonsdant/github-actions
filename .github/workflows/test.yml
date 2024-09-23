@@ -9,22 +9,31 @@ on:
       - trunk
 
 jobs:
-  update-trunk-cache-ref:
+  update-trunk-cached:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Fetch the latest trunk and refs/cache/trunk
+      - name: Fetch trunk and trunk-cached
         run: |
-          git fetch origin refs/cache/latest:refs/cache/latest || echo "No trunk cache ref exists"
+          git fetch origin trunk
+          git fetch origin trunk-cached || echo "No trunk-cached branch exists yet"
 
-      - name: Update the cache ref to latest trunk commit
+      - name: Switch to or create trunk-cached branch
         run: |
-          git update-ref refs/cache/trunk ${{ github.sha }}
+          if git switch trunk-cached; then
+            git pull origin trunk-cached
+          else
+            git switch -c trunk-cached
+          fi
 
-      - name: Push updated trunk cache ref
+      - name: Fast-forward merge trunk into trunk-cached
         run: |
-          git push origin refs/cache/trunk
+          git merge --ff-only origin/trunk
+
+      - name: Push updated trunk-cached branch
+        run: |
+          git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
