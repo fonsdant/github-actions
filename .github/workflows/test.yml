@@ -15,24 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create a local trunk-cached branch
+      - name: Update trunk-cached branch
         run: |
-          if git switch trunk-cached; then
-            git pull origin trunk-cached
-          else
-            git switch -c trunk-cached
-          fi
-
-      - name: Pull trunk-cached branch
-        run: |
-          git fetch origin trunk-cached || echo "No trunk-cached branch exists yet"
-
-      - name: Fast-forward merge trunk into trunk-cached
-        run: |
+          git switch -c trunk-cached
+          git pull origin trunk-cached || echo "No trunk-cached branch exists yet"
           git merge --ff-only ${{ github.sha }}
-
-      - name: Push updated trunk-cached branch
-        run: |
           git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
