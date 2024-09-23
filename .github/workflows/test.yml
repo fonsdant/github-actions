@@ -17,7 +17,8 @@ jobs:
 
       - name: Fetch trunk and trunk-cached
         run: |
-          git fetch origin trunk
+          git fetch --all --prune --tags
+          git log --oneline --graph --all
           git fetch origin trunk-cached || echo "No trunk-cached branch exists yet"
 
       - name: Switch to or create trunk-cached branch
