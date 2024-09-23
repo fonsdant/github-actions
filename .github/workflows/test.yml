@@ -18,7 +18,11 @@ jobs:
       - name: Update trunk-cached branch
         run: |
           git switch -c trunk-cached
-          git pull origin trunk-cached || echo "No trunk-cached branch exists yet"
+          if git fetch origin trunk-cached; then
+            git rebase origin/trunk-cached
+          else
+            echo "No trunk-cached branch exists yet"
+          fi
           git merge --ff-only ${{ github.sha }}
           git push origin trunk-cached
         env:
