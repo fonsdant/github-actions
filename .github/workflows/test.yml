@@ -9,20 +9,22 @@ on:
       - trunk
 
 jobs:
-  update-trunk-cached:
+  update-trunk-cache-ref:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Update trunk-cached branch with trunk
+      - name: Fetch the latest trunk and refs/cache/trunk
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git fetch origin trunk-cached
-          git checkout -b trunk-cached
-          git reset --hard origin/trunk-cached
-          git merge ${{ github.sha }} || git merge --allow-unrelated-histories ${{ github.sha }}
-          git push origin trunk-cached
+          git fetch origin refs/cache/latest:refs/cache/latest || echo "No trunk cache ref exists"
+
+      - name: Update the cache ref to latest trunk commit
+        run: |
+          git update-ref refs/cache/trunk ${{ github.sha }}
+
+      - name: Push updated trunk cache ref
+        run: |
+          git push origin refs/cache/trunk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
