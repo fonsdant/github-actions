@@ -20,10 +20,10 @@ jobs:
           git fetch origin trunk
           git fetch origin trunk-cached
           echo
-          echo
+          echo 'trunk ==============================================='
           git log --oneline origin/trunk
           echo
-          echo
+          echo 'trunk-cached ========================================'
           git log --oneline origin/trunk-cached
           
 
