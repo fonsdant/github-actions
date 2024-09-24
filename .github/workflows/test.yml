@@ -19,7 +19,9 @@ jobs:
         run: |
           git switch -c trunk-cached
           if git fetch origin trunk-cached; then
+          echo 'before rebase'
             git rebase origin/trunk-cached
+          echo 'after rebase'
           else
             echo "No trunk-cached branch exists yet"
           fi
