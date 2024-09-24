@@ -14,6 +14,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Git log test
+        run: |
+          git fetch origin trunk trunk-cached
+          echo
+          echo
+          git log trunk
+          echo
+          echo
+          git log trunk-cached
+          
 
       - name: Update trunk-cached branch
         run: |
