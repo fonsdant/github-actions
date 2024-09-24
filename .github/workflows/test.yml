@@ -23,7 +23,9 @@ jobs:
           else
             echo "No trunk-cached branch exists yet"
           fi
+          echo 'before merge'
           git merge --ff-only ${{ github.sha }} || cat .github/workflows/test.yml
+          echo 'after merge'
           git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
