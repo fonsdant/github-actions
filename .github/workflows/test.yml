@@ -17,12 +17,13 @@ jobs:
 
       - name: Update trunk-cached branch
         run: |
-          git switch -c trunk-cached
           if git fetch origin trunk-cached; then
+            git switch trunk-cached
           echo 'before rebase'
             git rebase origin/trunk-cached
           echo 'after rebase'
           else
+            git switch -c trunk-cached
             echo "No trunk-cached branch exists yet"
           fi
           echo 'before merge'
