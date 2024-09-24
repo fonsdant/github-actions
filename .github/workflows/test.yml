@@ -31,18 +31,10 @@ jobs:
 
       - name: Update trunk-cached branch
         run: |
-          if git fetch origin trunk-cached; then
-            git switch trunk-cached
-            echo 'before rebase'
-            git rebase origin/trunk-cached
-            echo 'after rebase'
-          else
-            git switch -c trunk-cached
-            echo "No trunk-cached branch exists yet"
-          fi
-          echo 'before merge'
-          git merge --ff-only ${{ github.sha }} --allow-unrelated-histories
-          echo 'after merge'
+          git fetch origin trunk-cached
+          git switch trunk-cached
+          git rebase origin/trunk-cached
+          git merge --ff-only ${{ github.sha }}
           git push origin trunk-cached
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
