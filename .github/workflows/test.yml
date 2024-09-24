@@ -19,15 +19,15 @@ jobs:
         run: |
           if git fetch origin trunk-cached; then
             git switch trunk-cached
-          echo 'before rebase'
+            echo 'before rebase'
             git rebase origin/trunk-cached
-          echo 'after rebase'
+            echo 'after rebase'
           else
             git switch -c trunk-cached
             echo "No trunk-cached branch exists yet"
           fi
           echo 'before merge'
-          git merge --ff-only ${{ github.sha }} || cat .github/workflows/test.yml
+          git merge --ff-only ${{ github.sha }} --allow-unrelated-histories
           echo 'after merge'
           git push origin trunk-cached
         env:
