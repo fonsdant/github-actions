@@ -20,10 +20,10 @@ jobs:
           git fetch origin trunk trunk-cached
           echo
           echo
-          git log origin/trunk
+          git log --oneline origin/trunk
           echo
           echo
-          git log origin/trunk-cached
+          git log --oneline origin/trunk-cached
           
 
       - name: Update trunk-cached branch
